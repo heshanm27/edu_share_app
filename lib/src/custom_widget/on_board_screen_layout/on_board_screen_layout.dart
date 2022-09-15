@@ -1,3 +1,4 @@
+import 'package:edu_share_app/src/custom_widget/custom_headline_text/custom_headline_text.dart';
 import 'package:edu_share_app/src/models/on_board_model/OnBoardModel.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -25,10 +26,7 @@ class OnBoardScreenLayout extends StatelessWidget {
           ),
           Column(
             children: [
-              Text(
-                model.title,
-                style: Theme.of(context).textTheme.headline3,
-              ),
+              CustomHeadlineText(text: model.title),
               Text(
                 model.subTitle,
                 textAlign: TextAlign.center,

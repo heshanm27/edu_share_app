@@ -1,13 +1,12 @@
 import 'dart:developer';
-
-import 'package:edu_share_app/src/auth_screen/signin_screen/signin_screen.dart';
-import 'package:edu_share_app/src/startup_widgets/on_boarding_screen/on_boarding_screen.dart';
-import 'package:edu_share_app/src/startup_widgets/welcome_screen/welcome_screen.dart';
-import 'package:edu_share_app/src/user_screens/home_screen/home_screen.dart';
-import 'package:edu_share_app/src/utills/shared_preferences/shared_preferences.dart';
+import 'package:edu_share_app/src/constants/colors/colors.dart';
+import 'package:edu_share_app/src/screens/auth_screen/signin_screen/signin_screen.dart';
+import 'package:edu_share_app/src/screens/startup_screen/on_boarding_screen/on_boarding_screen.dart';
+import 'package:edu_share_app/src/screens/startup_screen/welcome_screen/welcome_screen.dart';
+import 'package:edu_share_app/src/utils/shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 void main() async {
@@ -19,6 +18,9 @@ void main() async {
   await AppSharedPreferences.init();
   runApp(App());
 }
+
+
+
 
 class App extends StatefulWidget {
    App({Key? key}) : super(key: key);
@@ -38,9 +40,16 @@ class _AppState extends State<App> {
 
   @override
   Widget build(BuildContext context) {
-    return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: OnBoardState ? OnBoardingScreen() : WelcomeScreenState ? WelcomeScreen() : SignIn()
+    return ScreenUtilInit(
+      builder:(context,child) => GetMaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: ThemeData(
+              primaryColor:tPrimaryColor,
+
+            ),
+            home: OnBoardState ? OnBoardingScreen() : WelcomeScreenState ? WelcomeScreen() : SignIn(),
+        ),
+      designSize:const Size(360, 800) ,
     );
   }
 }

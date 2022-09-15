@@ -11,6 +11,7 @@ import '../../models/on_board_model/OnBoardModel.dart';
 class OnBoardController extends GetxController{
   final controller = LiquidController();
   RxInt curruntPage = 0.obs;
+  RxBool lastPage = false.obs;
 
   final pages = [
     OnBoardScreenLayout(
@@ -43,8 +44,19 @@ class OnBoardController extends GetxController{
   ];
   skip()=>controller.jumpToPage(page: 2);
   animateToNextSlide(){
+
     int nextPage = controller.currentPage + 1 ;
     controller.animateToPage(page: nextPage);
   }
-  onPageChangedCallBack(int activePageIndex) => curruntPage.value = activePageIndex;
+  onPageChangedCallBack(int activePageIndex){
+    print(activePageIndex);
+
+    if(activePageIndex == 2){
+      lastPage.value = true;
+    }else{
+      lastPage.value = false;
+    }
+    print(lastPage.value);
+    curruntPage.value = activePageIndex;
+  }
 }
