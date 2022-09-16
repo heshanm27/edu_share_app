@@ -14,3 +14,8 @@ const String tOnBoardingSubTitle3 = "Save time by just aopy pasting complete app
 const String tOnBoardingCounter1 = "1/3";
 const String tOnBoardingCounter2 = "2/3";
 const String tOnBoardingCounter3 = "3/3";
+
+
+
+// -- Auth Main Screen
+const String tAuthScreenText = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.Save time by just aopy pasting complete apps learn from videos.";

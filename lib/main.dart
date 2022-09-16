@@ -1,8 +1,6 @@
-import 'dart:developer';
 import 'package:edu_share_app/src/constants/colors/colors.dart';
-import 'package:edu_share_app/src/screens/auth_screen/signin_screen/signin_screen.dart';
+import 'package:edu_share_app/src/screens/auth_screen/auth_main_screen/auth_main_screen.dart';
 import 'package:edu_share_app/src/screens/startup_screen/on_boarding_screen/on_boarding_screen.dart';
-import 'package:edu_share_app/src/screens/startup_screen/welcome_screen/welcome_screen.dart';
 import 'package:edu_share_app/src/utils/shared_preferences/shared_preferences.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -31,13 +29,6 @@ class App extends StatefulWidget {
 
 class _AppState extends State<App> {
   var OnBoardState  = AppSharedPreferences.GetonBoardingState() ?? true;
-  var WelcomeScreenState = AppSharedPreferences.GetWelcomeScreenState() ?? true;
-  @override
-  void initState() {
-    super.initState();
-    log("Shareprefvalue $OnBoardState");
-  }
-
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(
@@ -45,11 +36,16 @@ class _AppState extends State<App> {
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               primaryColor:tPrimaryColor,
-
+              brightness: Brightness.light,
+              textTheme: TextTheme(
+                subtitle1: TextStyle(color: tTextColor)
+              )
             ),
-            home: OnBoardState ? OnBoardingScreen() : WelcomeScreenState ? WelcomeScreen() : SignIn(),
+            darkTheme: ThemeData(brightness: Brightness.dark,),
+            themeMode: ThemeMode.system,
+            home: OnBoardState ? OnBoardingScreen() : AuthMainScreen(),
         ),
-      designSize:const Size(360, 800) ,
+      designSize:const Size(375, 812),
     );
   }
 }
