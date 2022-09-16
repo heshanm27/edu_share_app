@@ -45,7 +45,7 @@ class _AppState extends State<App> {
             themeMode: ThemeMode.system,
             home: OnBoardState ? OnBoardingScreen() : AuthMainScreen(),
         ),
-      designSize:const Size(375, 812),
+      designSize:const Size(360, 812),
     );
   }
 }

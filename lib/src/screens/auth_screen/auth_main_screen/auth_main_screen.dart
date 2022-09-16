@@ -29,53 +29,53 @@ class _AuthMainScreenState extends State<AuthMainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-
       body: SafeArea(
-        child: Container(
-          padding: EdgeInsets.all(20.w),
-          margin: EdgeInsets.only(top: 44.h, bottom: 44.h),
-          alignment: Alignment.center,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(
-                height:15.h,
+          child: SingleChildScrollView(
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal:17.w),
+              alignment: Alignment.center,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(
+                    height: 60.h,
+                  ),
+                  Image.asset(tAuthMainScreenImage),
+                  SizedBox(
+                    height: 49.h,
+                  ),
+                  CustomHeadlineText(text: "Welcome !", textColor: tPrimaryColor),
+                  SizedBox(
+                    height: 56.h,
+                  ),
+                  Text(
+                    tAuthScreenText,style: Theme.of(context).textTheme.subtitle1,
+                    textAlign: TextAlign.center,
+                  ),
+                  SizedBox(
+                    height: 56.h,
+                  ),
+                  CustomButton(
+                      BtnText: 'Sign In', onPressed: () => Get.off(SignIn())),
+                  SizedBox(
+                    height: 30.h,
+                  ),
+                  OutlinedButton.icon(
+                      label:SizedBox(),
+                      icon: Text('Sign Up'),
+                      style: OutlinedButton.styleFrom(
+                          padding: EdgeInsets.all(5.h),
+                          minimumSize: Size.fromHeight(45.h),
+                          side: BorderSide(color: tPrimaryColor),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10.0.r),
+                          )),
+                      onPressed: () => {})
+                ],
               ),
-              Image.asset(tAuthMainScreenImage),
-              SizedBox(
-                height: 42.h,
-              ),
-              CustomHeadlineText(text: "Welcome !", textColor: tPrimaryColor),
-              SizedBox(
-                height: 42.h,
-              ),
-              Text(
-                tAuthScreenText,style: Theme.of(context).textTheme.subtitle1,
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(
-                height: 60.h,
-              ),
-              CustomButton(
-                  BtnText: 'Sign In', onPressed: () => Get.off(SignIn())),
-              SizedBox(
-                height: 42.h,
-              ),
-              OutlinedButton.icon(
-                  label:SizedBox(),
-                  icon: Text('Sign Up'),
-                  style: OutlinedButton.styleFrom(
-                      padding: EdgeInsets.all(5.h),
-                      minimumSize: Size.fromHeight(45.h),
-                      side: BorderSide(color: tPrimaryColor),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(10.0.r),
-                      )),
-                  onPressed: () => {})
-            ],
+            ),
           ),
         ),
-      ),
     );
   }
 }

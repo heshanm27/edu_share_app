@@ -9,14 +9,15 @@ class CustomButton extends StatelessWidget {
   final bool? IconBtn;
   final Color? BtnColor;
   final VoidCallback onPressed;
-
+  final double? Btnwidth;
   CustomButton(
       {Key? key,
       required this.BtnText,
       this.BtnIcon,
       this.IconBtn,
       this.BtnColor = tPrimaryColor,
-      required this.onPressed})
+      required this.onPressed,
+        this.Btnwidth})
       : super(key: key);
 
   @override
@@ -26,7 +27,8 @@ class CustomButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
           padding: EdgeInsets.all(5.h),
-          minimumSize: Size.fromHeight(45.h),
+        minimumSize: Btnwidth == null ? Size.fromHeight(45.h):null ,
+         fixedSize: Btnwidth != null ? Size(Btnwidth!, 45.h) : null,
           textStyle: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w500),
           backgroundColor: BtnColor,
           shape: RoundedRectangleBorder(

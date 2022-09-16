@@ -20,6 +20,7 @@ class OnBoardingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      
       body:Stack(
         alignment:Alignment.center,
           children: [
@@ -37,7 +38,10 @@ class OnBoardingScreen extends StatelessWidget {
 
             Positioned(
               bottom: 40.0.h,
-              child:CustomButton(BtnText: "Get Started",onPressed: ()=>Get.off(AuthMainScreen()))
+              child:Container(
+                  padding: EdgeInsets.symmetric(horizontal:17.w),
+                  alignment: Alignment.center,
+                  child: CustomButton(onPressed:()=>Get.off(AuthMainScreen()) ,BtnText: "Get Started",Btnwidth: 300.w,)),
             ),
             Positioned(
               top: 50.h,
