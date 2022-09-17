@@ -6,7 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class CustomButton extends StatelessWidget {
   final String BtnText;
   final IconData? BtnIcon;
-  final bool? IconBtn;
+  final bool? IsIconBtn;
   final Color? BtnColor;
   final VoidCallback onPressed;
   final double? Btnwidth;
@@ -14,7 +14,7 @@ class CustomButton extends StatelessWidget {
       {Key? key,
       required this.BtnText,
       this.BtnIcon,
-      this.IconBtn,
+      this.IsIconBtn = false,
       this.BtnColor = tPrimaryColor,
       required this.onPressed,
         this.Btnwidth})
@@ -34,7 +34,7 @@ class CustomButton extends StatelessWidget {
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(10.0.r),
               side: BorderSide(color: BtnColor!))),
-      icon: IconBtn == true ? Icon(BtnIcon) : SizedBox(),
+      icon: IsIconBtn == true ? Icon(BtnIcon) : SizedBox(),
     );
   }
 }

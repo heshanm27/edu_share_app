@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 
-const tPrimaryColor = Color(0xFF448AFF);
+const tPrimaryColor = Color(0xFF0071F2);
 const tSecondaryColor = Color(0xFFFFE400);
 const tAccentColor = Color(0xFF448AFF);
 

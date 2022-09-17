@@ -10,6 +10,7 @@ import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
 
 import '../../../constants/text/text.dart';
+import '../../../custom_widget/custom_outlined_btn/custom_outlined_btn.dart';
 import '../../../utils/shared_preferences/shared_preferences.dart';
 
 class AuthMainScreen extends StatefulWidget {
@@ -56,21 +57,11 @@ class _AuthMainScreenState extends State<AuthMainScreen> {
                     height: 56.h,
                   ),
                   CustomButton(
-                      BtnText: 'Sign In', onPressed: () => Get.off(SignIn())),
+                      BtnText: 'Sign In', onPressed: () =>Get.to(SignIn())),
                   SizedBox(
                     height: 30.h,
                   ),
-                  OutlinedButton.icon(
-                      label:SizedBox(),
-                      icon: Text('Sign Up'),
-                      style: OutlinedButton.styleFrom(
-                          padding: EdgeInsets.all(5.h),
-                          minimumSize: Size.fromHeight(45.h),
-                          side: BorderSide(color: tPrimaryColor),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.0.r),
-                          )),
-                      onPressed: () => {})
+                  CustomOutlinedBtn(BtnText: "Sign Up", onPressed: () =>{})
                 ],
               ),
             ),

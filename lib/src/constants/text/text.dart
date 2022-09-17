@@ -17,5 +17,8 @@ const String tOnBoardingCounter3 = "3/3";
 
 
 
-// -- Auth Main Screen
+// -- Auth Main Screen Text
 const String tAuthScreenText = "Lorem Ipsum is simply dummy text of the printing and typesetting industry.Save time by just aopy pasting complete apps learn from videos.";
+
+// Sign In Screen Text
+const String tSignInScreenText = "Enter your log in details to access your account";

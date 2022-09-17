@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "891113888648",
+    "project_id": "edushareflutter-1358a",
+    "storage_bucket": "edushareflutter-1358a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:891113888648:android:ead5c5acb30c98af72383d",
+        "android_client_info": {
+          "package_name": "com.example.edushare.edu_share_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "891113888648-dml68grgfd4n9kd60b2vm88b0i1ps7gp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAn6QjLO-P58Oq0Ydn7k1CyFtseVVSWYOQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "891113888648-dml68grgfd4n9kd60b2vm88b0i1ps7gp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
