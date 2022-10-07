@@ -41,7 +41,7 @@ class _AuthMainScreenState extends State<AuthMainScreen> {
                   SizedBox(
                     height: 60.h,
                   ),
-                  Image.asset(tAuthMainScreenImage),
+                  Image(image: AssetImage(tAuthMainScreenImage)),
                   SizedBox(
                     height: 49.h,
                   ),

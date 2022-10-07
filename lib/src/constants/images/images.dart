@@ -10,3 +10,7 @@ const String tOnBoardingImage3 = "assets/images/on_boarding_images/on-boarding-i
 const String tLogo = "assets/images/Logo.png";
 
 const String tAuthMainScreenImage = "assets/images/AuthMainScreen/AuthScreen.png";
+
+//user Role Images
+const String tUserRole = "assets/images/UserRoles/Asset 2.png";
+const String tOrgRole = "assets/images/UserRoles/Asset 1.png";

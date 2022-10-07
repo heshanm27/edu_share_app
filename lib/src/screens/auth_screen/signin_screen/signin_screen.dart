@@ -1,8 +1,10 @@
 import 'package:edu_share_app/src/constants/colors/colors.dart';
 import 'package:edu_share_app/src/custom_widget/custom_button/custom_button.dart';
 import 'package:edu_share_app/src/custom_widget/custom_headline_text/custom_headline_text.dart';
+import 'package:edu_share_app/src/screens/auth_screen/signup_screen/user_role_select/user_role_select.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import '../../../constants/images/images.dart';
 import '../../../constants/text/text.dart';
 import '../../../utils/shared_preferences/shared_preferences.dart';
@@ -79,7 +81,9 @@ class _SignInState extends State<SignIn> {
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
                           Text("Don't have an account yet?"),
-                          TextButton(onPressed: ()=>{}, child: Text("Create an account", style:TextStyle(
+                          TextButton(onPressed: ()=>{
+                            Get.to(UserRoleSelect())
+                          }, child: Text("Create an account", style:TextStyle(
                               fontSize: 14.sp
                           ))),
                         ],
