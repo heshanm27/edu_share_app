@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
 
 class OrgSignUp extends StatefulWidget {
@@ -21,7 +21,13 @@ class _OrgSignUpState extends State<OrgSignUp> {
       body: Stepper(
         currentStep: currentStep,
           onStepContinue: (){
-          setState(() => currentStep += 1);
+          final isLastStep = currentStep == getSteps().length -1;
+          if(isLastStep){
+
+          }else{
+            setState(() => currentStep += 1);
+          }
+
           },
           type: StepperType.horizontal,
           steps: getSteps()),
