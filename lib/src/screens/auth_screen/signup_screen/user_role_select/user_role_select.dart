@@ -28,9 +28,9 @@ class UserRoleSelect extends StatelessWidget {
           children: [
             CustomHeadlineText(text: "Select User Role",textColor: tPrimaryColor),
             SizedBox(height:30.h),
-            CustomRoleCard(UserRole: "Sign Up As User",AssetsImage: tUserRole,onPressed:()=> Get.off(()=>UserSignUp())),
+            CustomRoleCard(UserRole: "Sign Up As User",AssetsImage: tUserRole,onPressed:()=> Get.off(()=>UserSignUp(),transition: Transition.rightToLeftWithFade)),
             SizedBox(height:20.h),
-            CustomRoleCard(UserRole:"Sign Up As Organization",AssetsImage:tOrgRole,onPressed:()=> Get.off(()=>OrgSignUp()))
+            CustomRoleCard(UserRole:"Sign Up As Organization",AssetsImage:tOrgRole,onPressed:()=> Get.off(()=>OrgSignUp(),transition: Transition.rightToLeftWithFade))
           ],
         ),
       ) ,

@@ -42,6 +42,7 @@ dependencies:
   flutter_screenutil: ^5.5.4
   cloud_firestore: ^3.4.8
   firebase_core: ^1.22.0
+  image_picker: ^0.8.6
 
 
 
@@ -56,10 +57,10 @@ flutter_native_splash:
   android: true
   web : true
 
-  color: "#f7f6f1"
-  image: assets/Logo.png
-  color_dark: "#272727"
-  image_dark: assets/Logo.png
+  color: "#0071F2"
+  image: assets/images/Logo.png
+  color_dark: "#0071F2"
+  image_dark: assets/images/Logo.png
 
 
   android_gravity: center
@@ -68,10 +69,10 @@ flutter_native_splash:
   fullscreen: true
 
   android_12:
-    image: assets/Logo.png
-    icon_background_color: "#ffffff"
-    image_dark: assets/Logo.png
-    icon_background_color_dark: "#121212"
+    image: assets/images/Logo.png
+    icon_background_color: "#0071F2"
+    image_dark: assets/images/Logo.png
+    icon_background_color_dark: "#0071F2"
 
 flutter_icons:
   android: "launcher_icon"

@@ -41,8 +41,9 @@ class _SignInState extends State<SignIn> {
                   child:  Column(
                     children: [
                       CircleAvatar(
-                        backgroundImage: AssetImage(tLogo),
-                        radius: 40.r,
+                        backgroundColor: Colors.transparent,
+                        child:Image(image: AssetImage(tLogo)) ,
+                        radius: 45.r,
                       ),
                       SizedBox(height:20.h),
                       CustomHeadlineText(text: "Edu Share",textColor: tPrimaryColor,textSize: 32.sp,),
@@ -82,7 +83,7 @@ class _SignInState extends State<SignIn> {
                         children: [
                           Text("Don't have an account yet?"),
                           TextButton(onPressed: ()=>{
-                            Get.to(UserRoleSelect())
+                            Get.to(UserRoleSelect(),transition: Transition.rightToLeftWithFade)
                           }, child: Text("Create an account", style:TextStyle(
                               fontSize: 14.sp
                           ))),
