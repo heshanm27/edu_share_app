@@ -15,6 +15,7 @@ class CustomRoleCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       height: 300.h,
       width: 230.w,
@@ -43,7 +44,7 @@ class CustomRoleCard extends StatelessWidget {
                           blurRadius: 2,
                           offset: Offset(0, 1))
                     ],
-                    color: Colors.white)),
+                    color: MediaQuery.of(context).platformBrightness == Brightness.dark ? Colors.black26 : Colors.white)),
           ),
           buildShadow(false)
         ],
