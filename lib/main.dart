@@ -1,5 +1,4 @@
 import 'package:edu_share_app/src/constants/colors/colors.dart';
-import 'package:edu_share_app/src/screens/auth_screen/auth_main_screen/auth_main_screen.dart';
 import 'package:edu_share_app/src/screens/auth_screen/signin_screen/signin_screen.dart';
 import 'package:edu_share_app/src/screens/startup_screen/on_boarding_screen/on_boarding_screen.dart';
 import 'package:edu_share_app/src/utils/shared_preferences/shared_preferences.dart';

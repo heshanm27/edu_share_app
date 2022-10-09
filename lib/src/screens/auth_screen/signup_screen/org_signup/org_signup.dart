@@ -1,7 +1,10 @@
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_share_app/src/constants/colors/colors.dart';
+import 'package:edu_share_app/src/models/org_user_model/org_user_model.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -28,7 +31,7 @@ class _OrgSignUpState extends State<OrgSignUp> {
   final OrganizationName = TextEditingController();
   final OrganizationShortName = TextEditingController();
   final Address = TextEditingController();
-  final PhoneNo = TextEditingController();
+  final ContactNo = TextEditingController();
 
   var IsPasswordVisible = true;
   File? _image;
@@ -45,7 +48,35 @@ class _OrgSignUpState extends State<OrgSignUp> {
       print('Failed to pick image:$e');
     }
   }
+  Future CreateUser(String? id) async {
+    final docRefUser = FirebaseFirestore.instance.collection("user").doc(id);
+    final user = OrgUser(OrganizationName:OrganizationName.text.trim(), OrganizationShortName: OrganizationShortName.text.trim(), ContactNo:ContactNo.text.trim(), Email:Email.text.trim(), Address: Address.text.trim());
+    final jsonUser = user.toJSON();
+    await docRefUser.set(jsonUser);
 
+
+  }
+
+  Future SignUpUser () async{
+    try {
+      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+        email: Email.text.trim(),
+        password: Password.text.trim(),
+      );
+
+      CreateUser(credential.user?.uid);
+      print("credential");
+      print(credential.user?.uid);
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
   @override
   void dispose() {
     super.dispose();
@@ -55,7 +86,7 @@ class _OrgSignUpState extends State<OrgSignUp> {
     OrganizationName.dispose();
     OrganizationShortName.dispose();
     Address.dispose();
-    PhoneNo.dispose();
+    ContactNo.dispose();
   }
 
   @override
@@ -82,6 +113,7 @@ class _OrgSignUpState extends State<OrgSignUp> {
                 final isAccountFormValid =
                     AccountFormKey.currentState!.validate();
                 if (isLastStep) {
+                  SignUpUser();
                 } else {
                   if (currentStep == 0 && isAccountFormValid) {
                     setState(() => currentStep += 1);
@@ -238,7 +270,7 @@ class _OrgSignUpState extends State<OrgSignUp> {
                   SizedBox(height: 20.h),
                   TextFormField(
                       keyboardType: TextInputType.phone,
-                      controller: PhoneNo,
+                      controller: ContactNo,
                       decoration: InputDecoration(labelText: 'Contact No')),
                   SizedBox(height: 20.h),
                   TextFormField(
