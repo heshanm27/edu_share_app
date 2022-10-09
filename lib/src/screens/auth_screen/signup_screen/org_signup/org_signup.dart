@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:edu_share_app/src/constants/colors/colors.dart';
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -29,6 +30,7 @@ class _OrgSignUpState extends State<OrgSignUp> {
   final Address = TextEditingController();
   final PhoneNo = TextEditingController();
 
+  var IsPasswordVisible = true;
   File? _image;
 
   Future getImage() async {
@@ -45,6 +47,18 @@ class _OrgSignUpState extends State<OrgSignUp> {
   }
 
   @override
+  void dispose() {
+    super.dispose();
+    Email.dispose();
+    Password.dispose();
+    ConfirmPassword.dispose();
+    OrganizationName.dispose();
+    OrganizationShortName.dispose();
+    Address.dispose();
+    PhoneNo.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -53,7 +67,8 @@ class _OrgSignUpState extends State<OrgSignUp> {
       ),
       body: SafeArea(
         child: Theme(
-          data:Theme.of(context).copyWith(colorScheme: ColorScheme.light(primary:tPrimaryColor)),
+          data: Theme.of(context)
+              .copyWith(colorScheme: ColorScheme.light(primary: tPrimaryColor)),
           child: Stepper(
               currentStep: currentStep,
               elevation: 0,
@@ -73,16 +88,17 @@ class _OrgSignUpState extends State<OrgSignUp> {
                   }
                 }
               },
-              controlsBuilder: (BuildContext context, ControlsDetails contolls) {
+              controlsBuilder:
+                  (BuildContext context, ControlsDetails controllers) {
                 return Container(
                   child: Column(
                     children: [
-                      SizedBox(height:20.h),
+                      SizedBox(height: 20.h),
                       Row(children: <Widget>[
                         if (currentStep == 0)
                           Expanded(
                             child: ElevatedButton(
-                              onPressed: contolls.onStepContinue,
+                              onPressed: controllers.onStepContinue,
                               child: const Text('NEXT'),
                             ),
                           ),
@@ -93,23 +109,22 @@ class _OrgSignUpState extends State<OrgSignUp> {
                             if (currentStep == 1)
                               Expanded(
                                 child: ElevatedButton(
-                                  onPressed: contolls.onStepContinue,
+                                  onPressed: controllers.onStepContinue,
                                   child: const Text('Complete Sign Up'),
                                 ),
                               ),
                           ],
                         ),
-                        SizedBox(height:20.h),
+                        SizedBox(height: 20.h),
                         Row(
                           children: [
                             if (currentStep == 1)
                               Expanded(
                                 child: ElevatedButton(
                                   style: ElevatedButton.styleFrom(
-                                    backgroundColor:  Colors.transparent ,
-
+                                    backgroundColor: Colors.transparent,
                                   ),
-                                  onPressed: contolls.onStepCancel,
+                                  onPressed: controllers.onStepCancel,
                                   child: const Text('Back'),
                                 ),
                               ),
@@ -150,10 +165,12 @@ class _OrgSignUpState extends State<OrgSignUp> {
                       isNetWorkImage: _image != null ? false : true),
                   SizedBox(height: 20.h),
                   TextFormField(
+                      keyboardType: TextInputType.emailAddress,
                       validator: (value) {
-                        if (value!.isEmpty &&
-                            RegExp(r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
-                                .hasMatch(value)) {
+                        if (value!.isEmpty)
+                           {
+                          return "Please Enter  Email";
+                        }else if(!EmailValidator.validate(value)){
                           return "Please Enter Valid Email";
                         } else {
                           return null;
@@ -162,14 +179,32 @@ class _OrgSignUpState extends State<OrgSignUp> {
                       controller: Email,
                       decoration: InputDecoration(labelText: 'Email')),
                   SizedBox(height: 20.h),
-                  TextFormField(
-                      controller: Password,
-                      decoration: InputDecoration(labelText: 'Password,')),
+                  PasswordTexInput(
+                      IsPasswordVisible,
+                      'Password',
+                      Password,
+                      () => setState(() {
+                            IsPasswordVisible = !IsPasswordVisible;
+                          }),
+                          (value) {
+                    if (value!.isEmpty) {
+                      return "Please Enter Password";
+                    } else {
+                      return null;
+                    }
+                  }),
                   SizedBox(height: 20.h),
-                  TextFormField(
-                      controller: ConfirmPassword,
-                      decoration:
-                          InputDecoration(labelText: 'Confirm Password')),
+                  PasswordTexInput(IsPasswordVisible,'Confirm Password',ConfirmPassword, () => setState(() {
+                    IsPasswordVisible = !IsPasswordVisible;
+                  }),(value) {
+                    if (value!.isEmpty) {
+                      return "Please Enter Confirm Password";
+                    }else if(value != Password.text){
+                      return "Password and Confirm Password mismatch";
+                    } else {
+                      return null;
+                    }
+                  } ),
                   SizedBox(height: 20.h),
                 ],
               ),
@@ -182,6 +217,9 @@ class _OrgSignUpState extends State<OrgSignUp> {
               child: Column(
                 children: [
                   TextFormField(
+                      keyboardType: TextInputType.multiline,
+                      minLines: 1,
+                      maxLines: 5,
                       controller: OrganizationName,
                       decoration:
                           InputDecoration(labelText: 'Organization Name')),
@@ -192,10 +230,12 @@ class _OrgSignUpState extends State<OrgSignUp> {
                           labelText: 'Organization Short Name')),
                   SizedBox(height: 20.h),
                   TextFormField(
+                      keyboardType: TextInputType.phone,
                       controller: PhoneNo,
                       decoration: InputDecoration(labelText: 'Contact No')),
                   SizedBox(height: 20.h),
                   TextFormField(
+                      keyboardType: TextInputType.multiline,
                       controller: Address,
                       decoration: InputDecoration(labelText: 'Address')),
                 ],
@@ -203,4 +243,25 @@ class _OrgSignUpState extends State<OrgSignUp> {
             )),
         // Step(title: Text("Details3"),isActive: currentStep >= 2, content: Container()),
       ];
+
+  Widget PasswordTexInput(
+      bool IsPasswordVisible,
+      String label,
+      TextEditingController controller,
+      VoidCallback onPressed,
+      String? Function(String?) validateFunction) {
+    return TextFormField(
+        obscureText: IsPasswordVisible,
+        validator: validateFunction,
+        keyboardType: TextInputType.text,
+        controller: controller,
+        decoration: InputDecoration(
+            labelText: label,
+            suffixIcon: IconButton(
+              onPressed: onPressed,
+              icon: IsPasswordVisible
+                  ? Icon(Icons.visibility_off)
+                  : Icon(Icons.visibility),
+            )));
+  }
 }
