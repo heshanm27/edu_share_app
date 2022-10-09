@@ -221,6 +221,13 @@ class _OrgSignUpState extends State<OrgSignUp> {
                       minLines: 1,
                       maxLines: 5,
                       controller: OrganizationName,
+                      validator:(value){
+                        if(value!.isEmpty) {
+                          return "Please Enter Organization Name";
+                        }else{
+                          return null;
+                        }
+                      },
                       decoration:
                           InputDecoration(labelText: 'Organization Name')),
                   SizedBox(height: 20.h),
