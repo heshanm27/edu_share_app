@@ -10,9 +10,6 @@ class UserController extends GetxController{
    Future<String> checkUserType(String id) async {
      CollectionReference user = FirebaseFirestore.instance.collection('user');
      var userDoc = await user.doc(id).get();
-
-
       return userDoc['userRole'];
-
    }
 }

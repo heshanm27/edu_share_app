@@ -9,7 +9,7 @@ static showErrorSnackBar(String? text){
       children: [
         Icon(Icons.error_outline),
         SizedBox(width:16.w),
-        Expanded(child: Text(text!))
+        Expanded(child: Text(text!,style:TextStyle(color: Colors.white) ))
       ],
     ),
   backgroundColor: Colors.red,
@@ -23,7 +23,7 @@ static showErrorSnackBar(String? text){
        children: [
          Icon(Icons.done),
          SizedBox(width:16.w),
-         Expanded(child: Text(text!))
+         Expanded(child: Text(text!,style:TextStyle(color: Colors.white) ,))
        ],
      ),
        backgroundColor: Colors.green
