@@ -2,6 +2,7 @@ import 'package:edu_share_app/src/constants/colors/colors.dart';
 import 'package:edu_share_app/src/screens/auth_screen/signin_screen/signin_screen.dart';
 import 'package:edu_share_app/src/screens/startup_screen/on_boarding_screen/on_boarding_screen.dart';
 import 'package:edu_share_app/src/utils/shared_preferences/shared_preferences.dart';
+import 'package:edu_share_app/src/utils/snack_bar/snack_bar.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -35,6 +36,7 @@ class _AppState extends State<App> {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
       builder:(context,child) => GetMaterialApp(
+        scaffoldMessengerKey: CustomSnackBars.messengerKey,
             debugShowCheckedModeBanner: false,
             theme: ThemeData(
               primaryColor:tPrimaryColor,

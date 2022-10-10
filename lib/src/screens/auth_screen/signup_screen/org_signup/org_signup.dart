@@ -5,13 +5,15 @@ import 'package:edu_share_app/src/constants/colors/colors.dart';
 import 'package:edu_share_app/src/models/org_user_model/org_user_model.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:image_picker/image_picker.dart';
-
+import 'package:path/path.dart';
 import '../../../../custom_widget/custom_headline_text/custom_headline_text.dart';
 import '../../../../custom_widget/custom_profileImage/custom_profileImage.dart';
+import '../../../../utils/snack_bar/snack_bar.dart';
 
 class OrgSignUp extends StatefulWidget {
   const OrgSignUp({Key? key}) : super(key: key);
@@ -32,7 +34,7 @@ class _OrgSignUpState extends State<OrgSignUp> {
   final OrganizationShortName = TextEditingController();
   final Address = TextEditingController();
   final ContactNo = TextEditingController();
-
+   String url = '';
   var IsPasswordVisible = true;
   File? _image;
 
@@ -48,35 +50,7 @@ class _OrgSignUpState extends State<OrgSignUp> {
       print('Failed to pick image:$e');
     }
   }
-  Future CreateUser(String? id) async {
-    final docRefUser = FirebaseFirestore.instance.collection("user").doc(id);
-    final user = OrgUser(OrganizationName:OrganizationName.text.trim(), OrganizationShortName: OrganizationShortName.text.trim(), ContactNo:ContactNo.text.trim(), Email:Email.text.trim(), Address: Address.text.trim());
-    final jsonUser = user.toJSON();
-    await docRefUser.set(jsonUser);
 
-
-  }
-
-  Future SignUpUser () async{
-    try {
-      final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
-        email: Email.text.trim(),
-        password: Password.text.trim(),
-      );
-
-      CreateUser(credential.user?.uid);
-      print("credential");
-      print(credential.user?.uid);
-    } on FirebaseAuthException catch (e) {
-      if (e.code == 'weak-password') {
-        print('The password provided is too weak.');
-      } else if (e.code == 'email-already-in-use') {
-        print('The account already exists for that email.');
-      }
-    } catch (e) {
-      print(e);
-    }
-  }
   @override
   void dispose() {
     super.dispose();
@@ -88,9 +62,67 @@ class _OrgSignUpState extends State<OrgSignUp> {
     Address.dispose();
     ContactNo.dispose();
   }
-
   @override
   Widget build(BuildContext context) {
+
+
+    Future<String> UploadImage() async {
+      String filename = basename(_image!.path);
+      String  path = 'userProfileImages/${filename}';
+      try{
+
+        final ref = FirebaseStorage.instance.ref().child(path);
+        var uploadTask = ref.putFile(_image!);
+        final snapshot = await uploadTask.whenComplete(() => {});
+        final urlDownload = await snapshot.ref.getDownloadURL();
+        return urlDownload;
+      }
+      on FirebaseException catch (e) {
+        CustomSnackBars.showErrorSnackBar(e.message);
+      }
+   return '';
+    }
+    Future CreateUser(String? id) async {
+      try{
+      final docRefUser = FirebaseFirestore.instance.collection("user").doc(id);
+      final user = OrgUser(OrganizationName:OrganizationName.text.trim(), OrganizationShortName: OrganizationShortName.text.trim(), ContactNo:ContactNo.text.trim(), Email:Email.text.trim(), Address: Address.text.trim(),imgUrl: url);
+      final jsonUser = user.toJSON();
+      await docRefUser.set(jsonUser);
+      }  on FirebaseException catch (e) {
+        CustomSnackBars.showErrorSnackBar(e.message);
+      }
+    }
+
+    Future SignUpUser () async{
+      showDialog(context: context, builder: (context){
+        return Center(child: CircularProgressIndicator());
+      });
+      try {
+        final credential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
+          email: Email.text.trim(),
+          password: Password.text.trim(),
+        );
+        if(_image != null){
+          url = await UploadImage();
+        }
+        await CreateUser(credential.user?.uid);
+        Navigator.of(context).pop();
+        CustomSnackBars.showSuccessSnackBar('Successfully signed up');
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          CustomSnackBars.showErrorSnackBar('weak-password');
+          Navigator.of(context).pop();
+        } else if (e.code == 'email-already-in-use') {
+          CustomSnackBars.showErrorSnackBar('The account already exists for that email.');
+          Navigator.of(context).pop();
+        }else{
+          CustomSnackBars.showErrorSnackBar(e.message);
+          Navigator.of(context).pop();
+        }
+      }
+    }
+
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -112,7 +144,8 @@ class _OrgSignUpState extends State<OrgSignUp> {
                 final isLastStep = currentStep == getSteps().length - 1;
                 final isAccountFormValid =
                     AccountFormKey.currentState!.validate();
-                if (isLastStep) {
+                final isBasicFormValid =BasicDetailFormKey.currentState!.validate();
+                if (isLastStep && isBasicFormValid) {
                   SignUpUser();
                 } else {
                   if (currentStep == 0 && isAccountFormValid) {
@@ -221,6 +254,8 @@ class _OrgSignUpState extends State<OrgSignUp> {
                           (value) {
                     if (value!.isEmpty) {
                       return "Please Enter Password";
+                    }else if(value.length < 6){
+                      return "Password must be at least 6 characters";
                     } else {
                       return null;
                     }
@@ -265,17 +300,40 @@ class _OrgSignUpState extends State<OrgSignUp> {
                   SizedBox(height: 20.h),
                   TextFormField(
                       controller: OrganizationShortName,
+                      validator:(value){
+                        if(value!.isEmpty) {
+                          return "Please Enter Organization Short Name";
+                        }else{
+                          return null;
+                        }
+                      },
                       decoration: InputDecoration(
                           labelText: 'Organization Short Name')),
                   SizedBox(height: 20.h),
                   TextFormField(
                       keyboardType: TextInputType.phone,
                       controller: ContactNo,
+                      validator:(value){
+                        if(value!.isEmpty) {
+                          return "Please Enter Contact No";
+                        }else if(value.length != 10){
+                          return "Please Enter Valid Contact No";
+                        }else{
+                          return null;
+                        }
+                      },
                       decoration: InputDecoration(labelText: 'Contact No')),
                   SizedBox(height: 20.h),
                   TextFormField(
                       keyboardType: TextInputType.multiline,
                       controller: Address,
+                      validator:(value){
+                        if(value!.isEmpty) {
+                          return "Please Enter Address";
+                        }else{
+                          return null;
+                        }
+                      },
                       decoration: InputDecoration(labelText: 'Address')),
                 ],
               ),
