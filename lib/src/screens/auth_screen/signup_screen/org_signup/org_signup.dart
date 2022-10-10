@@ -92,7 +92,7 @@ class _OrgSignUpState extends State<OrgSignUp> {
         CustomSnackBars.showErrorSnackBar(e.message);
       }
     }
-
+//Firebase User Sign Up
     Future SignUpUser () async{
       showDialog(context: context, builder: (context){
         return Center(child: CircularProgressIndicator());
@@ -102,6 +102,7 @@ class _OrgSignUpState extends State<OrgSignUp> {
           email: Email.text.trim(),
           password: Password.text.trim(),
         );
+        //Upload
         if(_image != null){
           url = await UploadImage();
         }
