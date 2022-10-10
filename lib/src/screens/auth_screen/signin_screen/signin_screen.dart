@@ -43,6 +43,7 @@ class _SignInState extends State<SignIn> {
       print("Sign iN");
       showDialog(
           context: context,
+          barrierDismissible: false,
           builder: (context) {
             return Center(child: CircularProgressIndicator());
           });
@@ -52,6 +53,7 @@ class _SignInState extends State<SignIn> {
         Navigator.of(context).pop();
         CustomSnackBars.showSuccessSnackBar("Successfully Sign In");
       } on FirebaseAuthException catch (e) {
+        Navigator.of(context).pop();
         CustomSnackBars.showErrorSnackBar(e.message);
       }
     }

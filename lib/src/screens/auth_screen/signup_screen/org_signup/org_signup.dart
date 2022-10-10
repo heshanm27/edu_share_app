@@ -94,7 +94,7 @@ class _OrgSignUpState extends State<OrgSignUp> {
     }
 //Firebase User Sign Up
     Future SignUpUser () async{
-      showDialog(context: context, builder: (context){
+      showDialog(context: context, barrierDismissible: false, builder: (context){
         return Center(child: CircularProgressIndicator());
       });
       try {
