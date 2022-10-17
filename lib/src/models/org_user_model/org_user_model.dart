@@ -15,7 +15,7 @@ class OrgUser {
       required this.Email,
       required this.Address,
       this.imgUrl,
-      this.userRole= 'org',
+      this.userRole = 'org',
       this.newUser = true,
       this.offeringAreas});
 

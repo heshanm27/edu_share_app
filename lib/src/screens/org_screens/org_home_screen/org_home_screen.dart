@@ -13,7 +13,7 @@ Future SignOut () async{
       child: Scaffold(
         appBar: AppBar(title: Text("Organization User")),
         body: Container(
-          child: Center(child: ElevatedButton(onPressed: ()=> SignOut(),child:Text("Organization User SignOut" )),
+          child: Center(child: ElevatedButton(onPressed: ()=> SignOut(),child:Text("Organization org SignOut" )),
         ),
       ),
     )

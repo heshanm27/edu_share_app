@@ -1,7 +1,7 @@
 import 'package:edu_share_app/src/constants/colors/colors.dart';
 import 'package:edu_share_app/src/controllers/user_controller/user_controller.dart';
 import 'package:edu_share_app/src/screens/auth_screen/signin_screen/signin_screen.dart';
-import 'package:edu_share_app/src/screens/org_screens/org_home_screen/org_home_screen.dart';
+import 'package:edu_share_app/src/screens/org_screens/org_edufeed_screen/org_edufeed_screen.dart';
 import 'package:edu_share_app/src/screens/startup_screen/on_boarding_screen/on_boarding_screen.dart';
 import 'package:edu_share_app/src/screens/user_screens/home_screen/home_screen.dart';
 import 'package:edu_share_app/src/utils/shared_preferences/shared_preferences.dart';
@@ -78,12 +78,12 @@ class MainPage extends StatelessWidget {
               print("roleSnapshot");
               print(roleSnapshot.data);
               if(roleSnapshot.data == 'org' ){
-                return OrgHomeScreen();
+                return OrgEduFeed();
               }else{
                 return HomeScreen();
               }
             }else{
-              return HomeScreen();
+              return LoadingWidget();
             }
           },
           );
@@ -93,4 +93,11 @@ class MainPage extends StatelessWidget {
       },
     ));
   }
+}
+
+
+Widget LoadingWidget(){
+  return Container(
+    child: Center(child: CircularProgressIndicator()),
+  );
 }
