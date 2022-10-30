@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_share_app/src/constants/colors/colors.dart';
-import 'package:edu_share_app/src/models/org_user_model/org_user_model.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
@@ -12,6 +11,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import '../../../../custom_widget/custom_headline_text/custom_headline_text.dart';
 import '../../../../custom_widget/custom_profileImage/custom_profileImage.dart';
+import '../../../../models/user_model/User.dart';
 import '../../../../utils/snack_bar/snack_bar.dart';
 
 
@@ -85,7 +85,7 @@ class _UserSignUpState extends State<UserSignUp> {
     Future CreateUser(String? id) async {
       try{
         final docRefUser = FirebaseFirestore.instance.collection("user").doc(id);
-        final user = OrgUser(OrganizationName:OrganizationName.text.trim(), OrganizationShortName: OrganizationShortName.text.trim(), ContactNo:ContactNo.text.trim(), Email:Email.text.trim(), Address: Address.text.trim(),imgUrl: url);
+        final user = new UserModel(firstName:OrganizationName.text.trim(), lastName: OrganizationShortName.text.trim(), ContactNo:ContactNo.text.trim(), Email:Email.text.trim(), Address: Address.text.trim(),imgUrl: url);
         final jsonUser = user.toJSON();
         await docRefUser.set(jsonUser);
       }  on FirebaseException catch (e) {
@@ -291,25 +291,25 @@ class _UserSignUpState extends State<UserSignUp> {
                   controller: OrganizationName,
                   validator:(value){
                     if(value!.isEmpty) {
-                      return "Please Enter Organization Name";
+                      return "Please Enter First Name";
                     }else{
                       return null;
                     }
                   },
                   decoration:
-                  InputDecoration(labelText: 'Organization Name')),
+                  InputDecoration(labelText: 'First Name')),
               SizedBox(height: 20.h),
               TextFormField(
                   controller: OrganizationShortName,
                   validator:(value){
                     if(value!.isEmpty) {
-                      return "Please Enter Organization Short Name";
+                      return "Please Enter Last  Name";
                     }else{
                       return null;
                     }
                   },
                   decoration: InputDecoration(
-                      labelText: 'Organization Short Name')),
+                      labelText: 'Last Name')),
               SizedBox(height: 20.h),
               TextFormField(
                   keyboardType: TextInputType.phone,

@@ -1,7 +1,9 @@
 import 'package:edu_share_app/src/constants/colors/colors.dart';
 import 'package:edu_share_app/src/controllers/user_controller/user_controller.dart';
+import 'package:edu_share_app/src/models/user_model/User.dart';
 import 'package:edu_share_app/src/screens/auth_screen/signin_screen/signin_screen.dart';
 import 'package:edu_share_app/src/screens/org_screens/org_edufeed_screen/org_edufeed_screen.dart';
+import 'package:edu_share_app/src/screens/startup_screen/intrest_area_screen/intrest_area_screen.dart';
 import 'package:edu_share_app/src/screens/startup_screen/on_boarding_screen/on_boarding_screen.dart';
 import 'package:edu_share_app/src/screens/user_screens/home_screen/home_screen.dart';
 import 'package:edu_share_app/src/utils/shared_preferences/shared_preferences.dart';
@@ -42,7 +44,8 @@ class _AppState extends State<App> {
         theme: ThemeData(
             primaryColor: tPrimaryColor,
             brightness: Brightness.light,
-            textTheme: TextTheme(subtitle1: TextStyle(color: tTextColor)),
+            textTheme: TextTheme(subtitle1: TextStyle(color: tTextColor),headline3: TextStyle(color: tPrimaryColor)),
+
             appBarTheme:
                 AppBarTheme(iconTheme: IconThemeData(color: tPrimaryColor))),
         darkTheme: ThemeData(
@@ -61,9 +64,9 @@ class MainPage extends StatelessWidget {
   var OnBoardState = AppSharedPreferences.GetonBoardingState() ?? true;
   final userController = UserController();
 
-  Future<String> getRoles(String id) async {
-  String userRole = await userController.checkUserType(id);
-   return userRole;
+  Future<UserModel?> getRoles(String id) async {
+    UserModel userRole = await userController.checkUserType(id);
+    return userRole;
   }
 
   @override
@@ -75,9 +78,12 @@ class MainPage extends StatelessWidget {
         if (snapshot.hasData) {
           return FutureBuilder(future:getRoles(snapshot.data!.uid) ,builder: (context, roleSnapshot) {
             if(roleSnapshot.hasData){
-              print("roleSnapshot");
+
               print(roleSnapshot.data);
-              if(roleSnapshot.data == 'org' ){
+              if(roleSnapshot.data!.newUser == true){
+                return InterestArea();
+              }
+              else if(roleSnapshot.data?.userRole == 'org' ){
                 return OrgEduFeed();
               }else{
                 return HomeScreen();
