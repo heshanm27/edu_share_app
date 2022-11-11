@@ -12,6 +12,7 @@ import 'package:get/get_core/src/get_main.dart';
 import '../../../constants/text/text.dart';
 import '../../../custom_widget/custom_outlined_btn/custom_outlined_btn.dart';
 import '../../../utils/shared_preferences/shared_preferences.dart';
+import '../signup_screen/user_role_select/user_role_select.dart';
 
 class AuthMainScreen extends StatefulWidget {
   const AuthMainScreen({Key? key}) : super(key: key);
@@ -57,11 +58,12 @@ class _AuthMainScreenState extends State<AuthMainScreen> {
                     height: 56.h,
                   ),
                   CustomButton(
-                      BtnText: 'Sign In', onPressed: () =>Get.to(SignIn())),
+                      BtnText: 'Sign In', onPressed: () =>Get.to(()=>SignIn())),
                   SizedBox(
                     height: 30.h,
                   ),
-                  CustomOutlinedBtn(BtnText: "Sign Up", onPressed: () =>{})
+                  CustomOutlinedBtn(BtnText: "Sign Up", onPressed: () =>Get.to(()=>UserRoleSelect())
+                  )
                 ],
               ),
             ),

@@ -1,16 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:edu_share_app/src/models/interestArea_model/InterestAreaModel.dart';
+import 'package:edu_share_app/src/screens/org_screens/org_edufeed_screen/org_edufeed_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+
+import '../../../constants/colors/colors.dart';
+import '../../user_screens/home_screen/home_screen.dart';
 
 class InterestArea extends StatefulWidget {
-  const InterestArea({Key? key}) : super(key: key);
+  final String userRole;
+  const InterestArea({Key? key, required this.userRole}) : super(key: key);
 
   @override
   State<InterestArea> createState() => _InterestAreaState();
 }
 
 class _InterestAreaState extends State<InterestArea> {
+  var _filters = [];
+  bool _isLoading = false;
 
   Future<List<InterestAreaModel>> GetInterestAres() async{
     List<InterestAreaModel> Areas= [];
@@ -22,16 +32,31 @@ if(querySnapshot.docs.isEmpty){
   return Areas;
 }
     for(var doc in querySnapshot.docs){
-      print(doc['name']);
       InterestAreaModel area = new InterestAreaModel(doc['name'],doc['description']);
       Areas.add(area);
     }
     return Areas;
   }
 
+  addInterestToDB() async{
+    setState(()=>_isLoading = true);
+    final docUser = FirebaseFirestore.instance.collection('user').doc(FirebaseAuth.instance.currentUser?.uid);
+
+   await  docUser.update({
+      'offeringAreas':_filters,
+      'newUser':false
+    });
+   setState(()=>_isLoading = false);
+   if(widget.userRole == 'org'){
+     Get.off(()=> OrgEduFeed());
+   }else{
+     Get.off(()=>HomeScreen());
+   }
+  }
   @override
   void initState() {
     super.initState();
+    print(_filters);
   }
 
   @override
@@ -79,7 +104,12 @@ if(querySnapshot.docs.isEmpty){
                  }),
                ),
              ),
-              ElevatedButton(onPressed: (){}, child: Text("Done"))
+              SizedBox(height:20.h),
+
+          ElevatedButton(onPressed:addInterestToDB, child:_isLoading ? Row(mainAxisAlignment: MainAxisAlignment.center,children: [
+            Padding(padding: EdgeInsets.all(5),child: CircularProgressIndicator(color: Colors.white,)),SizedBox(width: 10.w),Text("Loading ....")
+          ]) : Padding(padding: EdgeInsets.all(10),child: Text("Done")))
+
             ],
           ),
         ),
@@ -89,8 +119,17 @@ if(querySnapshot.docs.isEmpty){
 
 
   List<Widget> getChipWidget(List<InterestAreaModel> list){
-
-
-    return list.map((e) => Chip(label: Text(e.name))).toList();
+    return list.map((e) => FilterChip(label: Text(e.name), onSelected: (value) { 
+      setState((){
+        if(value){
+          _filters.add(e.name);
+          print(_filters);
+        }else{
+          _filters.removeWhere((element) => element == e.name);
+        }
+      });
+    }, selected: _filters.contains(e.name),
+      checkmarkColor: tPrimaryColor,
+      selectedColor: tPrimaryColor.withOpacity(0.25),)).toList();
   }
 }

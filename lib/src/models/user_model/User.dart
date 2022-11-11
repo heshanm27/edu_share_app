@@ -8,14 +8,15 @@ class UserModel {
   String? userRole;
 
   bool? newUser = true;
-  List<String>? offeringAreas;
+  List<dynamic>? offeringAreas;
+
 
   UserModel(
       {this.firstName,
-      required this.lastName,
-      required this.ContactNo,
-      required this.Email,
-      required this.Address,
+       this.lastName,
+       this.ContactNo,
+       this.Email,
+       this.Address,
       this.imgUrl,
       this.userRole = 'org',
       this.newUser = true,
@@ -32,6 +33,8 @@ class UserModel {
     newUser = json["newUser"];
     offeringAreas = json["offeringAreas"];
   }
+
+
 
   Map<String, dynamic> toJSON() => {
         'firstName': this.firstName,

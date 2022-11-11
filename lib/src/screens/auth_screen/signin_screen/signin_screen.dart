@@ -2,6 +2,8 @@ import 'package:edu_share_app/src/constants/colors/colors.dart';
 import 'package:edu_share_app/src/custom_widget/custom_button/custom_button.dart';
 import 'package:edu_share_app/src/custom_widget/custom_headline_text/custom_headline_text.dart';
 import 'package:edu_share_app/src/screens/auth_screen/signup_screen/user_role_select/user_role_select.dart';
+import 'package:edu_share_app/src/screens/org_screens/org_edufeed_screen/org_edufeed_screen.dart';
+import 'package:edu_share_app/src/screens/user_screens/home_screen/home_screen.dart';
 import 'package:email_validator/email_validator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -9,6 +11,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import '../../../constants/images/images.dart';
 import '../../../constants/text/text.dart';
+import '../../../controllers/user_controller/user_controller.dart';
 import '../../../utils/shared_preferences/shared_preferences.dart';
 import '../../../utils/snack_bar/snack_bar.dart';
 
@@ -20,6 +23,7 @@ class SignIn extends StatefulWidget {
 }
 
 class _SignInState extends State<SignIn> {
+  final userController = Get.find<UserController>();
   @override
   void initState() {
     super.initState();
@@ -40,7 +44,6 @@ class _SignInState extends State<SignIn> {
 
   Widget build(BuildContext context) {
     UserSignIn() async {
-      print("Sign iN");
       showDialog(
           context: context,
           barrierDismissible: false,
@@ -50,7 +53,17 @@ class _SignInState extends State<SignIn> {
       try {
         await FirebaseAuth.instance.signInWithEmailAndPassword(
             email: Email.text, password: Password.text);
+
+        FirebaseAuth.instance.currentUser?.reload();
         Navigator.of(context).pop();
+        if(userController.getUser.userRole != null){
+          if(userController.getUser.userRole == 'org'){
+            Get.off(()=>OrgEduFeed());
+          }else{
+            Get.off(()=>HomeScreen());
+          }
+        }
+
         CustomSnackBars.showSuccessSnackBar("Successfully Sign In");
       } on FirebaseAuthException catch (e) {
         Navigator.of(context).pop();

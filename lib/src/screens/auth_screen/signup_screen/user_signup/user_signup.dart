@@ -7,12 +7,15 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import '../../../../custom_widget/custom_headline_text/custom_headline_text.dart';
 import '../../../../custom_widget/custom_profileImage/custom_profileImage.dart';
 import '../../../../models/user_model/User.dart';
 import '../../../../utils/snack_bar/snack_bar.dart';
+import '../../../startup_screen/intrest_area_screen/intrest_area_screen.dart';
 
 
 class UserSignUp extends StatefulWidget {
@@ -108,7 +111,9 @@ class _UserSignUpState extends State<UserSignUp> {
         }
         await CreateUser(credential.user?.uid);
         Navigator.of(context).pop();
+        Get.off(()=>InterestArea(userRole: 'user'));
         CustomSnackBars.showSuccessSnackBar('Successfully signed up');
+
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
           CustomSnackBars.showErrorSnackBar('weak-password');

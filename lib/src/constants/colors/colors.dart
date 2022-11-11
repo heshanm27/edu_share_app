@@ -7,9 +7,10 @@ const tAccentColor = Color(0xFF448AFF);
 
 
 const tWhiteColor = Colors.white;
+const textColor= Color(0xFFccc7c5);
+const titleColor = Color(0xFF5c524f);
 const tDarkColor = Color(0xff272727);
 const tCardBgColor = Color(0xFFF7F6F1);
-const tHeadLineColor = Color(0xFFBDBDBD);
 const tTextColor = Color(0x8A000000);
 // -- ON-BOARDING COLORS
 const tOnBoardingPage1Color = Colors.white;

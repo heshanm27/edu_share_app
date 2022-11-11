@@ -30,4 +30,17 @@ static showErrorSnackBar(String? text){
      );
      messengerKey.currentState!..removeCurrentSnackBar()..showSnackBar(snackBar);
    }
+   static showWarningSnackBar(String? text){
+     final snackBar =  SnackBar(content:Row(
+       mainAxisAlignment: MainAxisAlignment.start,
+       children: [
+         Icon(Icons.warning),
+         SizedBox(width:16.w),
+         Expanded(child: Text(text!,style:TextStyle(color: Colors.white) ,))
+       ],
+     ),
+         backgroundColor: Colors.amber
+     );
+     messengerKey.currentState!..removeCurrentSnackBar()..showSnackBar(snackBar);
+   }
 }

@@ -21,8 +21,10 @@ void main() async {
       overlays: [SystemUiOverlay.bottom, SystemUiOverlay.top]);
   // WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   // // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  // // FlutterNativeSplash.remove();
+  // // FlutterNativeSplash.remove()
+  Get.put(UserController());
   await Firebase.initializeApp();
+
   await AppSharedPreferences.init();
   runApp(App());
 }
@@ -65,45 +67,52 @@ class MainPage extends StatelessWidget {
   final userController = UserController();
 
   Future<UserModel?> getRoles(String id) async {
+    final userController = Get.find<UserController>();
     UserModel userRole = await userController.checkUserType(id);
+    Get.find<UserController>().user = userRole;
     return userRole;
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: StreamBuilder(
+    return  StreamBuilder<User?>(
       stream: FirebaseAuth.instance.authStateChanges(),
       builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-        if (snapshot.hasData) {
-          return FutureBuilder(future:getRoles(snapshot.data!.uid) ,builder: (context, roleSnapshot) {
-            if(roleSnapshot.hasData){
-
-              print(roleSnapshot.data);
-              if(roleSnapshot.data!.newUser == true){
-                return InterestArea();
-              }
-              else if(roleSnapshot.data?.userRole == 'org' ){
-                return OrgEduFeed();
-              }else{
-                return HomeScreen();
-              }
-            }else{
-              return LoadingWidget();
-            }
-          },
-          );
-        } else {
-          return OnBoardState ? OnBoardingScreen() : SignIn();
+        if(snapshot.connectionState == ConnectionState.active) {
+          if (snapshot.hasData) {
+            return FutureBuilder(future: getRoles(snapshot.data!.uid),
+              builder: (context, roleSnapshot) {
+                if (roleSnapshot.hasData) {
+                  if (roleSnapshot.data!.newUser == true) {
+                    return InterestArea(userRole:roleSnapshot.data!.userRole!,);
+                  }
+                  else if (roleSnapshot.data?.userRole == 'org') {
+                    return OrgEduFeed();
+                  } else {
+                    return HomeScreen();
+                  }
+                } else {
+                  return LoadingWidget();
+                }
+              },
+            );
+          } else {
+            return OnBoardState ? OnBoardingScreen() : SignIn();
+          }
+        }else if (snapshot.hasError){
+          return Text("Error Occurred");
         }
+        return Text("Error Occurred");
       },
-    ));
+    );
   }
 }
 
 
 Widget LoadingWidget(){
-  return Container(
-    child: Center(child: CircularProgressIndicator()),
+  return Scaffold(
+    body: Container(
+      child: Center(child: CircularProgressIndicator()),
+    ),
   );
 }

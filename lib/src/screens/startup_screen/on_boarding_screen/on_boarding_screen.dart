@@ -1,7 +1,6 @@
 
 import 'package:edu_share_app/src/controllers/on_board_controller/on_board_controller.dart';
 import 'package:edu_share_app/src/custom_widget/custom_button/custom_button.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -41,7 +40,7 @@ class OnBoardingScreen extends StatelessWidget {
               child:Container(
                   padding: EdgeInsets.symmetric(horizontal:17.w),
                   alignment: Alignment.center,
-                  child: CustomButton(onPressed:()=>Get.off(AuthMainScreen()) ,BtnText: "Get Started",Btnwidth: 300.w,)),
+                  child:CustomButton(onPressed:()=>Get.off(AuthMainScreen()) ,BtnText: "Get Started",Btnwidth: 300.w,)),
             ),
             Positioned(
               top: 50.h,

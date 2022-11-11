@@ -8,11 +8,13 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import '../../../../custom_widget/custom_headline_text/custom_headline_text.dart';
 import '../../../../custom_widget/custom_profileImage/custom_profileImage.dart';
 import '../../../../utils/snack_bar/snack_bar.dart';
+import '../../../startup_screen/intrest_area_screen/intrest_area_screen.dart';
 
 
 class OrgSignUp extends StatefulWidget {
@@ -85,7 +87,7 @@ class _OrgSignUpState extends State<OrgSignUp> {
     Future CreateUser(String? id) async {
       try{
       final docRefUser = FirebaseFirestore.instance.collection("user").doc(id);
-      final user = new UserModel(firstName:OrganizationName.text.trim(), lastName: OrganizationShortName.text.trim(), ContactNo:ContactNo.text.trim(), Email:Email.text.trim(), Address: Address.text.trim(),imgUrl: url);
+      final user = new UserModel(firstName:OrganizationName.text.trim(), lastName: OrganizationShortName.text.trim(), ContactNo:ContactNo.text.trim(), Email:Email.text.trim(), Address: Address.text.trim(),imgUrl: url.isNotEmpty ?url:'https://firebasestorage.googleapis.com/v0/b/edushareflutter-1358a.appspot.com/o/user%20avatar.png?alt=media&token=98bc263d-1414-4c39-8bab-1eeb8013637f' );
       final jsonUser = user.toJSON();
       await docRefUser.set(jsonUser);
       }  on FirebaseException catch (e) {
@@ -108,6 +110,7 @@ class _OrgSignUpState extends State<OrgSignUp> {
         }
         await CreateUser(credential.user?.uid);
         Navigator.of(context).pop();
+        Get.off(()=>InterestArea(userRole: 'org',));
         CustomSnackBars.showSuccessSnackBar('Successfully signed up');
       } on FirebaseAuthException catch (e) {
         if (e.code == 'weak-password') {
